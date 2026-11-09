@@ -23,13 +23,14 @@ main{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
 #stage{position:relative;width:min(100%,calc((100vh - 150px)*4/3));aspect-ratio:4/3;background:#000;border-radius:6px;box-shadow:0 10px 40px #000a;overflow:hidden;touch-action:pan-y}
 #stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .45s}
 #stage img.off{opacity:0}
-.nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:72px;background:#1b1210cc;z-index:3}
-#prev{left:0;border-radius:0 12px 12px 0}#next{right:0;border-radius:12px 0 0 12px}
 footer{padding:8px 12px calc(10px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px;align-items:center}
 .bar{width:min(560px,100%);height:6px;background:var(--panel);border-radius:3px;overflow:hidden}
 #prog{height:100%;width:0;background:var(--gold)}
-.row{display:flex;align-items:center;gap:10px}
-#pg{min-width:70px;text-align:center;color:var(--muted);font-variant-numeric:tabular-nums}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;width:min(100%,calc((100vh - 150px)*4/3))}
+.mid{display:flex;align-items:center;gap:10px}
+.pgbtn{height:52px;min-width:52px;padding:0 16px;font-size:16px;background:var(--red);border-color:var(--gold)}
+.pgbtn:disabled{background:var(--panel)}
+#pg{text-align:center;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
 .big{width:56px;height:56px;border-radius:50%;background:var(--red)}
 .panel{position:fixed;right:10px;top:calc(62px + env(safe-area-inset-top));width:min(340px,calc(100vw - 20px));max-height:calc(100vh - 80px);overflow:auto;background:var(--panel);border:1px solid var(--gold);border-radius:14px;padding:14px 16px;z-index:20;box-shadow:0 12px 40px #000c}
 .panel[hidden]{display:none}
@@ -46,11 +47,11 @@ input[type=range]{width:100%;accent-color:var(--gold);height:28px}
 #grid span{position:absolute;left:3px;bottom:2px;font-size:11px;background:#000a;padding:0 4px;border-radius:4px}
 #grid .cur{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}
 #grid-panel{width:min(520px,calc(100vw - 20px))}
-#start{position:fixed;inset:0;z-index:40;background:#0009;backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+#start{position:fixed;left:0;right:0;bottom:120px;z-index:40;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;pointer-events:none}
 #start button{background:var(--red);border-color:var(--gold);font-size:20px;height:60px;padding:0 34px;border-radius:30px}
-#start p{margin:0;color:var(--muted);font-size:14px}
+#start p{margin:0;color:var(--text);font-size:13px;background:#000b;padding:2px 10px;border-radius:10px}#start button{pointer-events:auto}
 #eye{position:fixed;inset:0;pointer-events:none;z-index:50;background:#ff9a1f;mix-blend-mode:multiply;opacity:0;transition:opacity .3s}
-@media(max-width:560px){.brand{font-size:13px}.nav{width:38px}}
+@media(max-width:560px){.brand{font-size:13px}.pgbtn span{display:none}.pgbtn{padding:0 12px}.mid{gap:8px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -70,19 +71,21 @@ input[type=range]{width:100%;accent-color:var(--gold);height:28px}
 <main>
   <div id="stage">
     <img id="imgA" alt=""><img id="imgB" class="off" alt="">
-    <button class="nav" id="prev" aria-label="上一頁"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-    <button class="nav" id="next" aria-label="下一頁"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
 </main>
 
 <footer>
   <div class="bar"><div id="prog"></div></div>
   <div class="row">
-    <button id="replay" aria-label="重播本頁"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button>
-    <button id="play" class="big" aria-label="播放朗讀"><svg id="playIco" viewBox="0 0 24 24"></svg></button>
-    <span id="pg" aria-live="polite">1 / 20</span>
-    <button id="pageMusic" aria-pressed="false" aria-label="播放本頁音樂" title="本頁音樂"><svg viewBox="0 0 24 24"><path d="M12 3v10.5a3.5 3.5 0 1 0 2 3.2V7h4V3z"/></svg></button>
+    <button id="prev" class="pgbtn" aria-label="上一頁"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg><span>上一頁</span></button>
+    <div class="mid">
+      <button id="replay" aria-label="重播本頁"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></button>
+      <button id="play" class="big" aria-label="播放朗讀"><svg id="playIco" viewBox="0 0 24 24"></svg></button>
+      <button id="pageMusic" aria-pressed="false" aria-label="播放本頁音樂" title="本頁音樂"><svg viewBox="0 0 24 24"><path d="M12 3v10.5a3.5 3.5 0 1 0 2 3.2V7h4V3z"/></svg></button>
+    </div>
+    <button id="next" class="pgbtn" aria-label="下一頁"><span>下一頁</span><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
   </div>
+  <div id="pg" aria-live="polite">1 / 20</div>
 </footer>
 
 <section class="panel" id="setPanel" hidden aria-label="聲音設定">
@@ -99,7 +102,7 @@ input[type=range]{width:100%;accent-color:var(--gold);height:28px}
 
 <section class="panel" id="grid-panel" hidden aria-label="目錄"><h2>選擇頁面</h2><div id="grid"></div></section>
 
-<div id="start"><button id="go">開始閱讀</button><p>點一下開始，會有朗讀與背景音樂</p></div>
+<div id="start"><button id="go">開始閱讀</button><p>點一下開始朗讀與背景音樂（也可直接按下一頁）</p></div>
 <div id="eye"></div>
 
 <audio id="bg" src="assets/music/accompaniment.mp3" loop preload="auto"></audio>
@@ -132,12 +135,21 @@ function applyAudio(){
 }
 function setPlayIcon(){$('playIco').innerHTML=voice.paused?ICON.play:ICON.pause;$('play').setAttribute('aria-label',voice.paused?'播放朗讀':'暫停朗讀')}
 
+const cache={};
+function preload(i){
+  if(i<0||i>=N||cache[i])return;
+  const im=new Image();im.src=`assets/graphics/${i}.jpg`;
+  const a=new Audio();a.preload='auto';a.src=`assets/speech/speech${i}.mp3`;
+  [['image',im.src],['audio',a.src]].forEach(([t,u])=>{const l=document.createElement('link');l.rel='preload';l.as=t;l.href=u;l.dataset.preloadPage=i+1;document.head.appendChild(l)});
+  cache[i]=[im,a];
+}
+function begin(){if(started)return;started=true;const st=$('start');if(st)st.remove();if(S.bgOn)bg.play().catch(()=>{})}
 function show(p,autoplay){
   p=Math.max(0,Math.min(N-1,p));S.page=p;
   const [a,b]=flip?[$('imgB'),$('imgA')]:[$('imgA'),$('imgB')];
   a.src=`assets/graphics/${p}.jpg`;a.alt=`繪本第 ${p+1} 頁`;
   a.classList.remove('off');b.classList.add('off');flip=!flip;
-  [p+1,p-1].forEach(i=>{if(i>=0&&i<N)new Image().src=`assets/graphics/${i}.jpg`});
+  [p+1,p+2,p-1].forEach(preload);
   $('pg').textContent=`${p+1} / ${N}`;$('prog').style.width=((p+1)/N*100)+'%';
   $('prev').disabled=p===0;$('next').disabled=p===N-1;
   document.querySelectorAll('#grid button').forEach((el,i)=>el.classList.toggle('cur',i===p));
@@ -187,8 +199,9 @@ let tx=null;const st=$('stage');
 st.addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
 st.addEventListener('touchend',e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)go(d<0?1:-1);tx=null});
 
-$('go').onclick=()=>{started=true;$('start').remove();bg.volume=S.bgvol/100;if(S.bgOn)bg.play().catch(()=>{});show(S.page,true)};
-applyAudio();show(S.page,false);
+$('go').onclick=()=>{begin();show(S.page,true)};
+document.addEventListener('pointerdown',begin,{once:true,capture:true});document.addEventListener('keydown',begin,{once:true,capture:true});
+applyAudio();show(S.page,false);document.documentElement.dataset.page=S.page+1;
 </script>
 </body>
 </html>
